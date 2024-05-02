@@ -23,4 +23,4 @@ The steps for having a basic game running.
 
 ### Drawing
 
-- [ ] Draw the cell accordingly to its state
+- [x] Draw the cell accordingly to its state

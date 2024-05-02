@@ -38,6 +38,7 @@ Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSi
 void DistributeMines(Cell* cells, int cellsAmount, int minesAmount);
 void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows);
 void SetAdjacentMinesAmount(Cell* cells, int cellsAmount);
+void DrawGame(Cell* cells, int cellsAmount);
 
 
 // Functions implementatios
@@ -150,6 +151,47 @@ void SetAdjacentMinesAmount(Cell* cells, int cellsAmount)
         }
     }
 }
+
+void DrawGame(Cell* cells, int cellsAmount)
+{
+    BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        for (int i = 0; i < cellsAmount; i++)
+        {
+            if (!cells[i].revealed && !cells[i].flagged)
+            {
+                DrawRectangleRec(cells[i].boundaries, DARKGRAY);
+            }
+
+            else if (cells[i].revealed && cells[i].mine)
+            {
+                DrawCircle(cells[i].boundaries.x + cells[i].boundaries.width/2.0f, cells[i].boundaries.y + cells[i].boundaries.height/2.0f, cells[i].boundaries.width*0.3f, RED);
+            }
+
+            else if (!cells[i].revealed && cells[i].flagged)
+            {
+                Vector2 v1 = {cells[i].boundaries.x + cells[i].boundaries.width*0.1f, cells[i].boundaries.y + cells[i].boundaries.height*0.1f};
+                Vector2 v2 = {cells[i].boundaries.x + cells[i].boundaries.width*0.1f, cells[i].boundaries.y + cells[i].boundaries.width/2.0f};
+                Vector2 v3 = {cells[i].boundaries.x + cells[i].boundaries.width*0.9f, cells[i].boundaries.y + cells[i].boundaries.width/2.0f};
+                DrawTriangle(v1, v2, v3, MAROON);
+                DrawRectangleV(v2, (Vector2){cells[i].boundaries.width*0.15f, cells[i].boundaries.height*0.8f/2.0f}, DARKGRAY);
+            }
+
+            else if (cells[i].revealed && cells[i].adjacentMinesAmount > 0)
+            {
+                Vector2 textSize = MeasureTextEx(GetFontDefault(), TextFormat("%d", cells[i].adjacentMinesAmount), 12, 0);
+                float textXPos = cells[i].boundaries.x + (cells[i].boundaries.width - textSize.x)/2.0f;
+                float textYPos = cells[i].boundaries.y + (cells[i].boundaries.height - textSize.y)/2.0f;
+                DrawText(TextFormat("%d", cells[i].adjacentMinesAmount), textXPos, textYPos, 12, DARKGRAY);
+            }
+
+            DrawRectangleLinesEx(cells[i].boundaries, 1.0f, DARKGRAY);
+        }
+
+    EndDrawing();
+}
+
 
 int main() 
 {
