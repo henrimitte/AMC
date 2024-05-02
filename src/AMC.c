@@ -31,18 +31,19 @@ typedef struct Cell {
 Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize);
 void DistributeMines(Cell* cells, int cellsAmount, int minesAmount);
 void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows);
+void SetAdjacentMinesAmount(Cell* cells, int cellsAmount);
 
 
 // Functions implementatios
 Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize) {
-    float halfScreenWidth = GetScreenWidth() / 2.0f;
-    float halfScreenHeight = GetScreenHeight() / 2.0f;
-    float xOffset = halfScreenWidth - (columns * cellSize / 2.0f);
-    float yOffset = halfScreenHeight - (rows * cellSize / 2.0f);
+    float halfScreenWidth = GetScreenWidth()/2.0f;
+    float halfScreenHeight = GetScreenHeight()/2.0f;
+    float xOffset = halfScreenWidth - (columns*cellSize/2.0f);
+    float yOffset = halfScreenHeight - (rows*cellSize/2.0f);
     float xPos = 0, yPos = 0;
     unsigned int x = 0, y = 0, cellsAmount = columns*rows;
 
-    Cell* grid = MemAlloc(cellsAmount * sizeof(Cell));
+    Cell* grid = MemAlloc(cellsAmount*sizeof(Cell));
     if (grid == NULL) exit(420);
 
     for (int i = 0; i < cellsAmount; i++)
@@ -103,11 +104,13 @@ void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows)
 {
     int actualRow = 0, actualCol = 0;
     bool isTop = false, isBottom = false, isLeft = false, isRight = false;
+    Cell* actualCell = NULL;
 
-    for (int index = 0; index < (columns*rows); index++) {
-        Cell *actualCell = &cells[index];
-        actualRow = index / columns;
-        actualCol = index % columns;
+    for (int index = 0; index < (columns*rows); index++)
+    {
+        actualCell = &cells[index];
+        actualRow = index/columns;
+        actualCol = index%columns;
 
         isTop = actualRow <= 0;
         isBottom = actualRow >= (rows - 1);
@@ -122,6 +125,21 @@ void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows)
         actualCell->adjacentCellsIndexes[5] = (isBottom || isLeft) ? -1 : index + columns - 1;
         actualCell->adjacentCellsIndexes[6] = (isBottom) ? -1 : index + columns;
         actualCell->adjacentCellsIndexes[7] = (isBottom || isRight) ? -1 : index + columns + 1;
+    }
+}
+
+void SetAdjacentMinesAmount(Cell* cells, int cellsAmount) {
+    int neighborIndex = 0;
+
+    for (int i = 0; i < cellsAmount; i++)
+    {
+        for (int j = 0; j < 8; j++) {
+            neighborIndex = cells[i].adjacentCellsIndexes[j];
+            if ((neighborIndex >= 0) && (cells[neighborIndex].mine))
+            {
+                cells[i].adjacentMinesAmount++;
+            }
+        }
     }
 }
 
