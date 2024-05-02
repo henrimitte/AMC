@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <raylib.h>
 
@@ -28,6 +29,7 @@ typedef struct Cell {
 
 // Functions declarations
 Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize);
+void DistributeMines(Cell* cells, int cellsAmount, int minesAmount);
 
 
 // Functions implementatios
@@ -66,6 +68,36 @@ Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSi
 
     return grid;
 }
+
+void DistributeMines(Cell* cells, int cellsAmount, int minesAmount)
+{
+    static struct timespec ts;
+    timespec_get(&ts, TIME_UTC);
+    srand(ts.tv_nsec);
+
+    int minesIndexes[minesAmount];
+    int newIndex = 0;
+    bool duplicate = false;
+
+    for (int count = 0; count < minesAmount;)
+    {
+        newIndex = rand()%cellsAmount;
+        for (int i = 0; i < count; i++)
+        {
+            if (newIndex == minesIndexes[i])
+            {
+                duplicate = true;
+                break;
+            }
+        }
+
+        if (!duplicate) minesIndexes[count++] = newIndex;
+        duplicate = false;
+    }
+
+    for (int i = 0; i < minesAmount; i++) cells[minesIndexes[i]].mine = true;    
+};
+
 
 int main() 
 {
