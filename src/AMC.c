@@ -30,6 +30,7 @@ typedef struct Cell {
 // Functions declarations
 Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize);
 void DistributeMines(Cell* cells, int cellsAmount, int minesAmount);
+void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows);
 
 
 // Functions implementatios
@@ -98,6 +99,31 @@ void DistributeMines(Cell* cells, int cellsAmount, int minesAmount)
     for (int i = 0; i < minesAmount; i++) cells[minesIndexes[i]].mine = true;    
 };
 
+void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows)
+{
+    int actualRow = 0, actualCol = 0;
+    bool isTop = false, isBottom = false, isLeft = false, isRight = false;
+
+    for (int index = 0; index < (columns*rows); index++) {
+        Cell *actualCell = &cells[index];
+        actualRow = index / columns;
+        actualCol = index % columns;
+
+        isTop = actualRow <= 0;
+        isBottom = actualRow >= (rows - 1);
+        isLeft = actualCol <= 0;
+        isRight = actualCol >= (columns - 1);
+
+        actualCell->adjacentCellsIndexes[0] = (isTop || isLeft) ? -1 : index - columns - 1;
+        actualCell->adjacentCellsIndexes[1] = (isTop) ? -1 : index - columns ;
+        actualCell->adjacentCellsIndexes[2] = (isTop || isRight) ? -1 : index - columns + 1;
+        actualCell->adjacentCellsIndexes[3] = (isLeft) ? -1 : index - 1;
+        actualCell->adjacentCellsIndexes[4] = (isRight) ? -1 : index + 1;
+        actualCell->adjacentCellsIndexes[5] = (isBottom || isLeft) ? -1 : index + columns - 1;
+        actualCell->adjacentCellsIndexes[6] = (isBottom) ? -1 : index + columns;
+        actualCell->adjacentCellsIndexes[7] = (isBottom || isRight) ? -1 : index + columns + 1;
+    }
+}
 
 int main() 
 {
