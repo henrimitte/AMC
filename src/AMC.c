@@ -7,6 +7,12 @@
 #include <raylib.h>
 
 
+// Defines
+#define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, "Beginner"}
+#define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, "Intermediate"}
+#define LEVEL_ADVANCED (Level){30, 16, 30*16, 99, "Advanced"}
+
+
 typedef struct Level {
     unsigned int columns;
     unsigned int rows;
@@ -35,7 +41,8 @@ void SetAdjacentMinesAmount(Cell* cells, int cellsAmount);
 
 
 // Functions implementatios
-Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize) {
+Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize)
+{
     float halfScreenWidth = GetScreenWidth()/2.0f;
     float halfScreenHeight = GetScreenHeight()/2.0f;
     float xOffset = halfScreenWidth - (columns*cellSize/2.0f);
@@ -128,7 +135,8 @@ void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows)
     }
 }
 
-void SetAdjacentMinesAmount(Cell* cells, int cellsAmount) {
+void SetAdjacentMinesAmount(Cell* cells, int cellsAmount)
+{
     int neighborIndex = 0;
 
     for (int i = 0; i < cellsAmount; i++)
