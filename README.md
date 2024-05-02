@@ -11,7 +11,7 @@ The steps for having a basic game running.
 ### Models
 
 - [ ] A Cell with boundaries, states (revealed, flagged and mine), its index in the grid, an array of adjacent cells indexes and a counter of how many contain a mine
-- [ ] A Level with number of columns, rows, mines, the total amount of cells and its name
+- [x] A Level with number of columns, rows, mines, the total amount of cells and its name
 - [ ] A Grid with boundaries, center coords, a level and an array of cells
 
 ### Game logic
