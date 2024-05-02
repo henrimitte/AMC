@@ -17,7 +17,7 @@ The steps for having a basic game running.
 ### Game logic
 
 - [ ] Create a global Grid and populate it
-- [ ] Create an array for a specified Level
+- [x] Create an array for a specified Level
 - [ ] Randomly distribute the mines within the grid cells
 - [ ] Get the neighbors indexes for every cell, set the array and the mine counter
 - [ ] Handle mouse click events for revealing and flagging cells
