@@ -45,6 +45,8 @@ void DrawGame(Cell* cells, Level* level);
 void HandleEvents(Cell** cellsPtr, Level* actualLevel);
 bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
 int GetClickedCellIndex(Level* actualLevel);
+void ToggleFlagged(Cell* cells, Level* actualLevel);
+
 
 // Functions implementatios
 Cell* GetCellsArray(Level* level)
@@ -251,6 +253,14 @@ int GetClickedCellIndex(Level* actualLevel)
     return (y * actualLevel->columns) + x;
 }
 
+void ToggleFlagged(Cell* cells, Level* actualLevel)
+{
+    int cellIndex = GetClickedCellIndex(actualLevel);
+    if (!cells[cellIndex].revealed)
+    {
+        cells[cellIndex].flagged = !cells[cellIndex].flagged;
+    }
+}
 
 int main() 
 {
