@@ -44,6 +44,7 @@ void GenerateGameGrid(Cell** cellsPtr, Level* level);
 void DrawGame(Cell* cells, Level* level);
 void HandleEvents(Cell** cellsPtr, Level* actualLevel);
 bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
+int GetClickedCellIndex(Level* actualLevel);
 
 // Functions implementatios
 Cell* GetCellsArray(Level* level)
@@ -235,6 +236,19 @@ bool IsClickInsideGrid(Cell* cells, Level* actualLevel)
     float width = actualLevel->columns*actualLevel->cellSize;
     float height = actualLevel->rows*actualLevel->cellSize;
     return CheckCollisionPointRec(GetMousePosition(), (Rectangle){x, y, width, height});
+}
+
+int GetClickedCellIndex(Level* actualLevel)
+{
+    Vector2 mousePos = GetMousePosition();
+    float levelWidth = actualLevel->columns*actualLevel->cellSize;
+    float levelHeight = actualLevel->rows*actualLevel->cellSize;
+    float relX = mousePos.x - ((GetScreenWidth() - levelWidth)/2.0f);
+    float relY = mousePos.y - ((GetScreenHeight() - levelHeight)/2.0f);
+
+    int x = relX / actualLevel->cellSize;
+    int y = relY / actualLevel->cellSize;
+    return (y * actualLevel->columns) + x;
 }
 
 
