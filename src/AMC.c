@@ -216,6 +216,15 @@ void HandleEvents(Cell** cellsPtr, Level *actualLevel)
     {
         ToggleFlagged(*cellsPtr, actualLevel);
     }
+    else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    {
+        int cellIndex = GetClickedCellIndex(actualLevel);
+        Cell* cell = &(*cellsPtr)[cellIndex];
+
+        if (!cell->revealed && !cell->mine && !cell->adjacentMinesAmount) FloodFill(*cellsPtr, *cell);
+        if (!cell->revealed) cell->revealed = true;
+        else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
+    }
 
     if (IsKeyPressed(KEY_R))
     {
