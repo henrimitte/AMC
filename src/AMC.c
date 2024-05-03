@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include <raylib.h>
@@ -41,6 +42,7 @@ void SetAdjacentCellsIndexes(Cell* cells, Level* level);
 void SetAdjacentMinesAmount(Cell* cells, Level* level);
 void GenerateGameGrid(Cell** cellsPtr, Level* level);
 void DrawGame(Cell* cells, Level* level);
+void HandleEvents(Cell** cellsPtr, Level *actualLevel);
 
 
 // Functions implementatios
@@ -201,6 +203,29 @@ void DrawGame(Cell* cells, Level* level)
         }
 
     EndDrawing();
+}
+
+void HandleEvents(Cell** cellsPtr, Level *actualLevel)
+{
+    if (IsKeyPressed(KEY_R))
+    {
+        GenerateGameGrid(cellsPtr, actualLevel);
+    }
+    else if (IsKeyPressed(KEY_ONE) && strcmp(actualLevel->name, LEVEL_BEGINNER.name))
+    {
+        *actualLevel = LEVEL_BEGINNER;
+        GenerateGameGrid(cellsPtr, actualLevel);
+    }
+    else if (IsKeyPressed(KEY_TWO) && strcmp(actualLevel->name, LEVEL_INTERMEDIATE.name))
+    {
+        *actualLevel = LEVEL_INTERMEDIATE;
+        GenerateGameGrid(cellsPtr, actualLevel);
+    }
+    else if (IsKeyPressed(KEY_THREE) && strcmp(actualLevel->name, LEVEL_ADVANCED.name))
+    {
+        *actualLevel = LEVEL_ADVANCED;
+        GenerateGameGrid(cellsPtr, actualLevel);
+    }
 }
 
 

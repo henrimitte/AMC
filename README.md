@@ -19,7 +19,7 @@ The steps for having a basic game running.
 - [x] Randomly distribute the mines within the grid cells
 - [x] Get the neighbors indexes for every cell, set the array and the mine counter
 - [ ] Handle mouse click events for revealing and flagging cells
-- [ ] Handle keyboard event for generate a new game
+- [x] Handle keyboard event for generate a new game
 
 ### Drawing
 
