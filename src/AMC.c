@@ -39,6 +39,7 @@ Cell* GetCellsArray(Level* level);
 void DistributeMines(Cell* cells, Level* level);
 void SetAdjacentCellsIndexes(Cell* cells, Level* level);
 void SetAdjacentMinesAmount(Cell* cells, Level* level);
+void GenerateGameGrid(Cell** cellsPtr, Level* level);
 void DrawGame(Cell* cells, Level* level);
 
 
@@ -151,6 +152,15 @@ void SetAdjacentMinesAmount(Cell* cells, Level* level)
             }
         }
     }
+}
+
+void GenerateGameGrid(Cell** cells, Level* level)
+{
+    if (*cells != NULL) MemFree((*cells));
+    *cells = GetCellsArray(level);
+    DistributeMines(*cells, level);
+    SetAdjacentCellsIndexes(*cells, level);
+    SetAdjacentMinesAmount(*cells, level);
 }
 
 void DrawGame(Cell* cells, Level* level)
