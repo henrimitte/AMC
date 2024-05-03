@@ -151,7 +151,8 @@ void SetAdjacentMinesAmount(Cell* cells, Level* level)
 
     for (int i = 0; i < level->cellsAmount; i++)
     {
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++)
+        {
             neighborIndex = cells[i].adjacentCellsIndexes[j];
             if ((neighborIndex >= 0) && (cells[neighborIndex].mine))
             {
@@ -316,5 +317,23 @@ int CountAdjacentFlagged(Cell* cells, Cell cell)
 
 int main() 
 {
-   return 0;
+    InitWindow(500, 280, "AMC");
+    SetTargetFPS(30);
+
+    Level* actualLevel = &LEVEL_INTERMEDIATE;
+    Cell* cells = NULL;
+    Cell** cellsPtr = &cells;
+    GenerateGameGrid(cellsPtr, actualLevel);
+
+    while (!WindowShouldClose())
+    {
+        HandleEvents(cellsPtr, actualLevel);
+        DrawGame(cells, actualLevel);
+    }
+
+    MemFree(cells);
+
+    CloseWindow();
+
+    return 0;
 }
