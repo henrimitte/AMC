@@ -46,6 +46,7 @@ void HandleEvents(Cell** cellsPtr, Level* actualLevel);
 bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
 int GetClickedCellIndex(Level* actualLevel);
 void ToggleFlagged(Cell* cells, Level* actualLevel);
+void FloodFill(Cell* cells, Cell cell);
 
 
 // Functions implementatios
@@ -264,6 +265,31 @@ void ToggleFlagged(Cell* cells, Level* actualLevel)
     if (!cells[cellIndex].revealed)
     {
         cells[cellIndex].flagged = !cells[cellIndex].flagged;
+    }
+}
+
+void FloodFill(Cell* cells, Cell cell)
+{
+    cell.revealed = true;
+
+    int neighborIndex = -1;
+    Cell* neighbor = NULL;
+
+    for (int i = 0; i < 8; i++)
+    {
+        neighborIndex = cell.adjacentCellsIndexes[i];
+
+        if (neighborIndex >= 0)
+        {
+            neighbor = &cells[neighborIndex];
+
+            if (!neighbor->revealed && !neighbor->flagged)
+            {
+                neighbor->revealed = true;
+
+                if (neighbor->adjacentMinesAmount == 0) FloodFill(cells, *neighbor);
+            }
+        }
     }
 }
 
