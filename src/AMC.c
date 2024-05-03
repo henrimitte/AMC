@@ -35,33 +35,33 @@ typedef struct Cell {
 
 
 // Functions declarations
-Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize);
-void DistributeMines(Cell* cells, int cellsAmount, int minesAmount);
-void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows);
-void SetAdjacentMinesAmount(Cell* cells, int cellsAmount);
-void DrawGame(Cell* cells, int cellsAmount);
+Cell* GetCellsArray(Level* level);
+void DistributeMines(Cell* cells, Level* level);
+void SetAdjacentCellsIndexes(Cell* cells, Level* level);
+void SetAdjacentMinesAmount(Cell* cells, Level* level);
+void DrawGame(Cell* cells, Level* level);
 
 
 // Functions implementatios
-Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSize)
+Cell* GetCellsArray(Level* level)
 {
     float halfScreenWidth = GetScreenWidth()/2.0f;
     float halfScreenHeight = GetScreenHeight()/2.0f;
-    float xOffset = halfScreenWidth - (columns*cellSize/2.0f);
-    float yOffset = halfScreenHeight - (rows*cellSize/2.0f);
+    float xOffset = halfScreenWidth - (level->columns*level->cellSize/2.0f);
+    float yOffset = halfScreenHeight - (level->rows*level->cellSize/2.0f);
     float xPos = 0, yPos = 0;
-    unsigned int x = 0, y = 0, cellsAmount = columns*rows;
+    unsigned int x = 0, y = 0, cellsAmount = level->columns*level->rows;
 
     Cell* grid = MemAlloc(cellsAmount*sizeof(Cell));
     if (grid == NULL) exit(420);
 
     for (int i = 0; i < cellsAmount; i++)
     {
-        xPos = xOffset + (x*cellSize);
-        yPos = yOffset + (y*cellSize);
+        xPos = xOffset + (x*level->cellSize);
+        yPos = yOffset + (y*level->cellSize);
         grid[i] = (Cell)
         {
-            .boundaries=(Rectangle){xPos, yPos, cellSize, cellSize},
+            .boundaries=(Rectangle){xPos, yPos, level->cellSize, level->cellSize},
             .revealed=false,
             .flagged=false,
             .mine=false,
@@ -70,7 +70,7 @@ Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSi
             .adjacentCellsIndexes = {-1, -1, -1, -1, -1, -1, -1, -1},
         };
 
-        if (++x >= columns)
+        if (++x >= level->columns)
         {
             x = 0;
             ++y;
@@ -80,19 +80,19 @@ Cell* GetCellsArray(unsigned int columns, unsigned int rows, unsigned int cellSi
     return grid;
 }
 
-void DistributeMines(Cell* cells, int cellsAmount, int minesAmount)
+void DistributeMines(Cell* cells, Level* level)
 {
     static struct timespec ts;
     timespec_get(&ts, TIME_UTC);
     srand(ts.tv_nsec);
 
-    int minesIndexes[minesAmount];
+    int minesIndexes[level->minesAmount];
     int newIndex = 0;
     bool duplicate = false;
 
-    for (int count = 0; count < minesAmount;)
+    for (int count = 0; count < level->minesAmount;)
     {
-        newIndex = rand()%cellsAmount;
+        newIndex = rand()%level->cellsAmount;
         for (int i = 0; i < count; i++)
         {
             if (newIndex == minesIndexes[i])
@@ -106,42 +106,42 @@ void DistributeMines(Cell* cells, int cellsAmount, int minesAmount)
         duplicate = false;
     }
 
-    for (int i = 0; i < minesAmount; i++) cells[minesIndexes[i]].mine = true;    
+    for (int i = 0; i < level->minesAmount; i++) cells[minesIndexes[i]].mine = true;    
 };
 
-void SetAdjacentCellsIndexes(Cell* cells, int columns, int rows)
+void SetAdjacentCellsIndexes(Cell* cells, Level* level)
 {
     int actualRow = 0, actualCol = 0;
     bool isTop = false, isBottom = false, isLeft = false, isRight = false;
     Cell* actualCell = NULL;
 
-    for (int index = 0; index < (columns*rows); index++)
+    for (int index = 0; index < (level->columns*level->rows); index++)
     {
         actualCell = &cells[index];
-        actualRow = index/columns;
-        actualCol = index%columns;
+        actualRow = index/level->columns;
+        actualCol = index%level->columns;
 
         isTop = actualRow <= 0;
-        isBottom = actualRow >= (rows - 1);
+        isBottom = actualRow >= (level->rows - 1);
         isLeft = actualCol <= 0;
-        isRight = actualCol >= (columns - 1);
+        isRight = actualCol >= (level->columns - 1);
 
-        actualCell->adjacentCellsIndexes[0] = (isTop || isLeft) ? -1 : index - columns - 1;
-        actualCell->adjacentCellsIndexes[1] = (isTop) ? -1 : index - columns ;
-        actualCell->adjacentCellsIndexes[2] = (isTop || isRight) ? -1 : index - columns + 1;
+        actualCell->adjacentCellsIndexes[0] = (isTop || isLeft) ? -1 : index - level->columns - 1;
+        actualCell->adjacentCellsIndexes[1] = (isTop) ? -1 : index - level->columns ;
+        actualCell->adjacentCellsIndexes[2] = (isTop || isRight) ? -1 : index - level->columns + 1;
         actualCell->adjacentCellsIndexes[3] = (isLeft) ? -1 : index - 1;
         actualCell->adjacentCellsIndexes[4] = (isRight) ? -1 : index + 1;
-        actualCell->adjacentCellsIndexes[5] = (isBottom || isLeft) ? -1 : index + columns - 1;
-        actualCell->adjacentCellsIndexes[6] = (isBottom) ? -1 : index + columns;
-        actualCell->adjacentCellsIndexes[7] = (isBottom || isRight) ? -1 : index + columns + 1;
+        actualCell->adjacentCellsIndexes[5] = (isBottom || isLeft) ? -1 : index + level->columns - 1;
+        actualCell->adjacentCellsIndexes[6] = (isBottom) ? -1 : index + level->columns;
+        actualCell->adjacentCellsIndexes[7] = (isBottom || isRight) ? -1 : index + level->columns + 1;
     }
 }
 
-void SetAdjacentMinesAmount(Cell* cells, int cellsAmount)
+void SetAdjacentMinesAmount(Cell* cells, Level* level)
 {
     int neighborIndex = 0;
 
-    for (int i = 0; i < cellsAmount; i++)
+    for (int i = 0; i < level->cellsAmount; i++)
     {
         for (int j = 0; j < 8; j++) {
             neighborIndex = cells[i].adjacentCellsIndexes[j];
@@ -153,12 +153,12 @@ void SetAdjacentMinesAmount(Cell* cells, int cellsAmount)
     }
 }
 
-void DrawGame(Cell* cells, int cellsAmount)
+void DrawGame(Cell* cells, Level* level)
 {
     BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        for (int i = 0; i < cellsAmount; i++)
+        for (int i = 0; i < level->cellsAmount; i++)
         {
             if (!cells[i].revealed && !cells[i].flagged)
             {
@@ -196,5 +196,5 @@ void DrawGame(Cell* cells, int cellsAmount)
 
 int main() 
 {
-    return 0;
+   return 0;
 }
