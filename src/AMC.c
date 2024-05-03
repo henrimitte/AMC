@@ -42,8 +42,8 @@ void SetAdjacentCellsIndexes(Cell* cells, Level* level);
 void SetAdjacentMinesAmount(Cell* cells, Level* level);
 void GenerateGameGrid(Cell** cellsPtr, Level* level);
 void DrawGame(Cell* cells, Level* level);
-void HandleEvents(Cell** cellsPtr, Level *actualLevel);
-
+void HandleEvents(Cell** cellsPtr, Level* actualLevel);
+bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
 
 // Functions implementatios
 Cell* GetCellsArray(Level* level)
@@ -226,6 +226,15 @@ void HandleEvents(Cell** cellsPtr, Level *actualLevel)
         *actualLevel = LEVEL_ADVANCED;
         GenerateGameGrid(cellsPtr, actualLevel);
     }
+}
+
+bool IsClickInsideGrid(Cell* cells, Level* actualLevel)
+{
+    float x = cells[0].boundaries.x;
+    float y = cells[0].boundaries.y;
+    float width = actualLevel->columns*actualLevel->cellSize;
+    float height = actualLevel->rows*actualLevel->cellSize;
+    return CheckCollisionPointRec(GetMousePosition(), (Rectangle){x, y, width, height});
 }
 
 
