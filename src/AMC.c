@@ -210,6 +210,11 @@ void DrawGame(Cell* cells, Level* level)
 
 void HandleEvents(Cell** cellsPtr, Level *actualLevel)
 {
+    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    {
+        ToggleFlagged(*cellsPtr, actualLevel);
+    }
+
     if (IsKeyPressed(KEY_R))
     {
         GenerateGameGrid(cellsPtr, actualLevel);
