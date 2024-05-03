@@ -47,6 +47,7 @@ bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
 int GetClickedCellIndex(Level* actualLevel);
 void ToggleFlagged(Cell* cells, Level* actualLevel);
 void FloodFill(Cell* cells, Cell cell);
+int CountAdjacentFlagged(Cell* cells, Cell cell);
 
 
 // Functions implementatios
@@ -291,6 +292,20 @@ void FloodFill(Cell* cells, Cell cell)
             }
         }
     }
+}
+
+int CountAdjacentFlagged(Cell* cells, Cell cell)
+{
+    int adjacentFlagged = 0, neighborIndex = -1;
+    Cell* neighbor = NULL;
+
+    for (int i = 0; i < 8; i++)
+    {
+        neighborIndex = cell.adjacentCellsIndexes[i];
+        if (neighborIndex >=0 && cells[neighborIndex].flagged) adjacentFlagged++;
+    }
+
+    return adjacentFlagged;
 }
 
 int main() 
