@@ -173,16 +173,13 @@ void GenerateGameGrid(Cell** cells, Level* level)
 void DrawGame(Cell* cells, Level* level)
 {
     BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(LIGHTGRAY);
 
         for (int i = 0; i < level->cellsAmount; i++)
         {
-            if (!cells[i].revealed && !cells[i].flagged)
-            {
-                DrawRectangleRec(cells[i].boundaries, DARKGRAY);
-            }
+            DrawRectangleRec(cells[i].boundaries, cells[i].revealed ? LIGHTGRAY : GRAY);
 
-            else if (cells[i].revealed && cells[i].mine)
+            if (cells[i].revealed && cells[i].mine)
             {
                 DrawCircle(cells[i].boundaries.x + cells[i].boundaries.width/2.0f, cells[i].boundaries.y + cells[i].boundaries.height/2.0f, cells[i].boundaries.width*0.3f, RED);
             }
