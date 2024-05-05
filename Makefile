@@ -52,8 +52,5 @@ else
 endif
 
 clean:
-	@echo "# Cleaning build files..."
-	rm --force --verbose $(BUILD_DIR)/*
-
 	@echo "# Removing the build directory..."
 	rm --recursive --force --verbose $(BUILD_DIR)
