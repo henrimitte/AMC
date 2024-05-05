@@ -9,6 +9,13 @@
 
 
 // Defines
+#define GAME_NAME "AMC Minesweeper Clone"
+
+#define AMC_VERSION_MAJOR 0
+#define AMC_VERSION_MINOR 0
+#define AMC_VERSION_PATCH 0
+#define AMC_VERSION "0.0.0"
+
 #define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, 16, "Beginner"}
 #define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, 16, "Intermediate"}
 #define LEVEL_ADVANCED (Level){30, 16, 30*16, 99, 16, "Advanced"}
@@ -50,7 +57,7 @@ void FloodFill(Cell* cells, Cell cell);
 int CountAdjacentFlagged(Cell* cells, Cell cell);
 
 
-// Functions implementatios
+// Functions implementations
 Cell* GetCellsArray(Level* level)
 {
     float halfScreenWidth = GetScreenWidth()/2.0f;
@@ -262,9 +269,9 @@ int GetClickedCellIndex(Level* actualLevel)
     float relX = mousePos.x - ((GetScreenWidth() - levelWidth)/2.0f);
     float relY = mousePos.y - ((GetScreenHeight() - levelHeight)/2.0f);
 
-    int x = relX / actualLevel->cellSize;
-    int y = relY / actualLevel->cellSize;
-    return (y * actualLevel->columns) + x;
+    int x = relX/actualLevel->cellSize;
+    int y = relY/actualLevel->cellSize;
+    return (y*actualLevel->columns) + x;
 }
 
 void ToggleFlagged(Cell* cells, Level* actualLevel)
@@ -317,8 +324,14 @@ int CountAdjacentFlagged(Cell* cells, Cell cell)
 
 int main() 
 {
-    InitWindow(500, 280, "AMC");
-    SetTargetFPS(30);
+    SetTraceLogLevel(LOG_NONE);
+
+    static int fps = 30;
+    int screenWidth = 500;
+    int screenHeight = 276;
+
+    InitWindow(screenWidth, screenHeight, GAME_NAME);
+    SetTargetFPS(fps);
 
     Level* actualLevel = &LEVEL_INTERMEDIATE;
     Cell* cells = NULL;
