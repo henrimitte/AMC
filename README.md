@@ -6,7 +6,7 @@ If you are looking for binaries, they are available at the [Github Releases](htt
 
 *AMC stands for AMC Minesweeper Clone!*
 
-## Features (v0.0.0)
+## Features (v0.1.0)
 
 - 3 Levels available:
     1. **Beginner**, with a **9x9** grid and **10 mines**
