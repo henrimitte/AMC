@@ -1,8 +1,10 @@
 # AMC Minesweeper Clone
 
-A ~~not exactly~~ Minesweeper Clone made in C using Raylib.
+**A ~~not exactly~~ Minesweeper Clone made in C using Raylib.**
 
-If you are looking for binaries, they are available at the [Github Releases](https://github.com/henrimitte/AMC/releases) page.
+<img align="center" src="https://github.com/henrimitte/AMC/blob/main/resources/AMC_Complete_Advanced_Level_528x342.png" width="528px">
+
+If you are looking for binaries, they may be available at the [Github Releases](https://github.com/henrimitte/AMC/releases) page.
 
 *AMC stands for AMC Minesweeper Clone!*
 
