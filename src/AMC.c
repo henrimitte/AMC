@@ -41,6 +41,16 @@ typedef struct Cell {
 } Cell;
 
 
+// Global variables declarations
+static int fps = 30;
+static int screenWidth = 500;
+static int screenHeight = 276;
+
+static Level* actualLevel = &LEVEL_INTERMEDIATE;
+static Cell* cells = NULL;
+static Cell** cellsPtr = &cells;
+
+
 // Functions declarations
 Cell* GetCellsArray(Level* level);
 void DistributeMines(Cell* cells, Level* level);
@@ -325,16 +335,9 @@ int main()
 {
     SetTraceLogLevel(LOG_NONE);
 
-    static int fps = 30;
-    int screenWidth = 500;
-    int screenHeight = 276;
-
     InitWindow(screenWidth, screenHeight, GAME_NAME);
     SetTargetFPS(fps);
 
-    Level* actualLevel = &LEVEL_INTERMEDIATE;
-    Cell* cells = NULL;
-    Cell** cellsPtr = &cells;
     GenerateGameGrid(cellsPtr, actualLevel);
 
     while (!WindowShouldClose())
