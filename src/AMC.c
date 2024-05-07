@@ -343,8 +343,6 @@ int main()
         DrawGame(cells, actualLevel);
     }
 
-    MemFree(cells);
-
     CloseWindow();
 
     return 0;
