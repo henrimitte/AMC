@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include <raylib.h>
+#include <raymath.h>
 
 
 // Defines
@@ -275,11 +276,10 @@ int GetClickedCellIndex(Level* actualLevel)
     Vector2 mousePos = GetMousePosition();
     float levelWidth = actualLevel->columns*actualLevel->cellSize;
     float levelHeight = actualLevel->rows*actualLevel->cellSize;
-    float relX = mousePos.x - ((GetScreenWidth() - levelWidth)/2.0f);
-    float relY = mousePos.y - ((GetScreenHeight() - levelHeight)/2.0f);
 
-    int x = relX/actualLevel->cellSize;
-    int y = relY/actualLevel->cellSize;
+    int x = Remap(mousePos.x, cells[0].boundaries.x, cells[0].boundaries.x + levelWidth, 0.0f, levelWidth)/actualLevel->cellSize;
+    int y = Remap(mousePos.y, cells[0].boundaries.y, cells[0].boundaries.y + levelHeight, 0.0f, levelHeight)/actualLevel->cellSize;
+
     return (y*actualLevel->columns) + x;
 }
 
