@@ -13,8 +13,8 @@
 
 #define AMC_VERSION_MAJOR 0
 #define AMC_VERSION_MINOR 2
-#define AMC_VERSION_PATCH 0
-#define AMC_VERSION "0.2.0"
+#define AMC_VERSION_PATCH 1
+#define AMC_VERSION "0.2.1"
 
 #define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, 16, "Beginner"}
 #define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, 16, "Intermediate"}
@@ -324,11 +324,6 @@ void FloodFill(Cell* cells, Cell cell)
 {
     cell.revealed = true;
 
-    if (cell.mine)
-    {
-        gameState = GAME_OVER;
-    }
-
     int neighborIndex = -1;
     Cell* neighbor = NULL;
 
@@ -343,7 +338,7 @@ void FloodFill(Cell* cells, Cell cell)
             if (!neighbor->revealed && !neighbor->flagged)
             {
                 neighbor->revealed = true;
-
+                if (neighbor->mine) gameState = GAME_OVER;
                 if (neighbor->adjacentMinesAmount == 0) FloodFill(cells, *neighbor);
             }
         }
