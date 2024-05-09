@@ -238,38 +238,55 @@ void DrawGame(Cell* cells, Level* level)
 
 void HandleEvents(Cell** cellsPtr, Level *actualLevel)
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    if ((gameState == PLAYING) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && IsClickInsideGrid(*cellsPtr, actualLevel))
     {
         ToggleFlagged(*cellsPtr, actualLevel);
     }
-    else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    else if ((gameState != GAME_OVER) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsClickInsideGrid(*cellsPtr, actualLevel))
     {
+        if (gameState == FIRST_CLICK)
+        {
+            DistributeMines(cells, actualLevel);
+            SetAdjacentCellsIndexes(cells, actualLevel);
+            SetAdjacentMinesAmount(cells, actualLevel);
+            gameState = PLAYING;
+        }
+
         int cellIndex = GetClickedCellIndex(actualLevel);
         Cell* cell = &(*cellsPtr)[cellIndex];
 
         if (!cell->revealed && !cell->mine && !cell->adjacentMinesAmount) FloodFill(*cellsPtr, *cell);
         if (!cell->revealed) cell->revealed = true;
         else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
+
+        if (cell->mine)
+        {
+            gameState = GAME_OVER;
+        }
     }
 
     if (IsKeyPressed(KEY_R))
     {
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_ONE) && strcmp(actualLevel->name, LEVEL_BEGINNER.name))
     {
         *actualLevel = LEVEL_BEGINNER;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_TWO) && strcmp(actualLevel->name, LEVEL_INTERMEDIATE.name))
     {
         *actualLevel = LEVEL_INTERMEDIATE;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_THREE) && strcmp(actualLevel->name, LEVEL_ADVANCED.name))
     {
         *actualLevel = LEVEL_ADVANCED;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
 }
 
@@ -306,6 +323,11 @@ void ToggleFlagged(Cell* cells, Level* actualLevel)
 void FloodFill(Cell* cells, Cell cell)
 {
     cell.revealed = true;
+
+    if (cell.mine)
+    {
+        gameState = GAME_OVER;
+    }
 
     int neighborIndex = -1;
     Cell* neighbor = NULL;
@@ -382,7 +404,7 @@ int main()
     InitWindow(screenWidth, screenHeight, GAME_NAME);
     SetTargetFPS(fps);
 
-    GenerateGameGrid(cellsPtr, actualLevel);
+    PopulateCellsArray();
 
     while (!WindowShouldClose())
     {
