@@ -46,9 +46,11 @@ enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
 
 
 // Global variables declarations
-static int fps = 30;
-static int screenWidth = 500;
-static int screenHeight = 276;
+static const int fps = 30;
+static const int screenWidth = 500;
+static const int screenHeight = 276;
+
+static Vector2 *gridCenter = &(Vector2){screenWidth/2.0f, screenHeight/2.0f};
 
 static Level* actualLevel = &LEVEL_INTERMEDIATE;
 static Cell* cells = NULL;
