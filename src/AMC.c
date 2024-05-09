@@ -42,6 +42,9 @@ typedef struct Cell {
 } Cell;
 
 
+enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
+
+
 // Global variables declarations
 static int fps = 30;
 static int screenWidth = 500;
@@ -50,6 +53,8 @@ static int screenHeight = 276;
 static Level* actualLevel = &LEVEL_INTERMEDIATE;
 static Cell* cells = NULL;
 static Cell** cellsPtr = &cells;
+
+static enum GameState gameState = FIRST_CLICK;
 
 
 // Functions declarations
