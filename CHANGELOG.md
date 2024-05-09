@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Nothing yet!
 
+## [0.2.1] - 2024-05-09
+
+## Fixed
+
+- When chording, if a mine was revealed, the game would not stop. Now it correctly set the state to GAME OVER in those cases.
+
 ## [0.2.0] - 2024-05-09
 
 ### Added
