@@ -121,6 +121,7 @@ void DistributeMines(Cell* cells, Level* level)
 
     int minesIndexes[level->minesAmount];
     int newIndex = 0;
+    int forbiddenIndex = GetClickedCellIndex(actualLevel);
     bool duplicate = false;
 
     for (int count = 0; count < level->minesAmount;)
@@ -134,6 +135,8 @@ void DistributeMines(Cell* cells, Level* level)
                 break;
             }
         }
+
+        if (newIndex == forbiddenIndex) duplicate = true;
 
         if (!duplicate) minesIndexes[count++] = newIndex;
         duplicate = false;
