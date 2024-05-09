@@ -12,9 +12,9 @@
 #define GAME_NAME "AMC Minesweeper Clone"
 
 #define AMC_VERSION_MAJOR 0
-#define AMC_VERSION_MINOR 1
+#define AMC_VERSION_MINOR 2
 #define AMC_VERSION_PATCH 0
-#define AMC_VERSION "0.1.0"
+#define AMC_VERSION "0.2.0"
 
 #define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, 16, "Beginner"}
 #define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, 16, "Intermediate"}

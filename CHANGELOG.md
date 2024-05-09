@@ -7,13 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Nothing yet!
+
+## [0.2.0] - 2024-05-09
+
 ### Added
 
-- This CHANGELOG to keep track on game changes.
-- A **GAME OVER state**. If the user clicks on a mine, mouse clicks will not have effect anymore until the game is restarted.
+- This CHANGELOG to keep track of game changes.
+- A Game Over state. If the user clicks on a mine, mouse clicks will not have effect anymore until the game is restarted.
 
 ### Changed
 
+- README file to describe the new features.
 - The sequence of events for having a new game. Now the mines are distributed AFTER the first click, which guarantees the first opened cells is not a mine.
 
 ## [0.1.0] - 2024-05-05
