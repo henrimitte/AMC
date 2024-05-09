@@ -72,6 +72,7 @@ int GetClickedCellIndex(Level* actualLevel);
 void ToggleFlagged(Cell* cells, Level* actualLevel);
 void FloodFill(Cell* cells, Cell cell);
 int CountAdjacentFlagged(Cell* cells, Cell cell);
+void PopulateCellsArray();
 
 
 // Functions implementations
@@ -336,6 +337,39 @@ int CountAdjacentFlagged(Cell* cells, Cell cell)
     }
 
     return adjacentFlagged;
+}
+
+void PopulateCellsArray()
+{
+    float xOffset = gridCenter->x - (actualLevel->columns*actualLevel->cellSize/2.0f);
+    float yOffset = gridCenter->y - (actualLevel->rows*actualLevel->cellSize/2.0f);
+    float xPos = 0, yPos = 0;
+    int x = 0, y = 0;
+
+    *cellsPtr = (Cell*)realloc((*cellsPtr), actualLevel->cellsAmount*sizeof(Cell));
+    if (*cellsPtr == NULL) exit(1);
+
+    for (int i = 0; i < actualLevel->cellsAmount; i++)
+    {
+        xPos = xOffset + (x*actualLevel->cellSize);
+        yPos = yOffset + (y*actualLevel->cellSize);
+        cells[i] = (Cell)
+        {
+            .boundaries=(Rectangle){xPos, yPos, actualLevel->cellSize, actualLevel->cellSize},
+            .revealed=false,
+            .flagged=false,
+            .mine=false,
+            .index=i,
+            .adjacentMinesAmount=0,
+            .adjacentCellsIndexes = {-1, -1, -1, -1, -1, -1, -1, -1},
+        };
+
+        if (++x >= actualLevel->columns)
+        {
+            x = 0;
+            ++y;
+        }
+    }
 }
 
 int main() 
