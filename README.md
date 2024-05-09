@@ -8,7 +8,7 @@ If you are looking for binaries, they may be available at the [Github Releases](
 
 *AMC stands for AMC Minesweeper Clone!*
 
-## Features (v0.1.0)
+## Features (v0.2.0)
 
 - 3 Levels available:
     1. **Beginner**, with a **9x9** grid and **10 mines**
@@ -16,9 +16,11 @@ If you are looking for binaries, they may be available at the [Github Releases](
     3. **Advanced**, with a **30x16** grid and **99 mines**
 - **Flag/Unflag** cells you think have a mine
 - **Automatically Reveal** adjacent cells
+- The first cell opened is **never** a mine
+- A **Game Over** state when a mine is opened
 
 ## Gameplay
-Currently, the game does not check for any **Win** or **Lose** condition, so it's up to the player to start a new game when clicking on a mine or winning a game. 
+Currently, the game does not check for a **Win** condition, but is does check for a **Lose** condition. If a mine is opened, then the mouse clicks will not have effect anymore until a new game is started. Still, it's up to the player to start a new game when opening a mine or winning a game. 
 
 #### Keyboard commands:
 - Press `R` to generate a **New Game** for the current level
@@ -68,7 +70,7 @@ Offers the options to install/uninstall the game.
     git clone https://github.com/henrimitte/AMC.git
     cd AMC/
     make
-NOTE: executable binary will be at `AMC/build/AMC.o`
+NOTE: executable binary will be at `AMC/build/AMC`
 
 #### Install with:
     sudo make install

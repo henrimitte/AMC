@@ -5,15 +5,16 @@
 #include <time.h>
 
 #include <raylib.h>
+#include <raymath.h>
 
 
 // Defines
 #define GAME_NAME "AMC Minesweeper Clone"
 
 #define AMC_VERSION_MAJOR 0
-#define AMC_VERSION_MINOR 1
+#define AMC_VERSION_MINOR 2
 #define AMC_VERSION_PATCH 0
-#define AMC_VERSION "0.1.0"
+#define AMC_VERSION "0.2.0"
 
 #define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, 16, "Beginner"}
 #define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, 16, "Intermediate"}
@@ -41,6 +42,23 @@ typedef struct Cell {
 } Cell;
 
 
+enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
+
+
+// Global variables declarations
+static const int fps = 30;
+static const int screenWidth = 500;
+static const int screenHeight = 276;
+
+static Vector2 *gridCenter = &(Vector2){screenWidth/2.0f, screenHeight/2.0f};
+
+static Level* actualLevel = &LEVEL_INTERMEDIATE;
+static Cell* cells = NULL;
+static Cell** cellsPtr = &cells;
+
+static enum GameState gameState = FIRST_CLICK;
+
+
 // Functions declarations
 Cell* GetCellsArray(Level* level);
 void DistributeMines(Cell* cells, Level* level);
@@ -54,6 +72,7 @@ int GetClickedCellIndex(Level* actualLevel);
 void ToggleFlagged(Cell* cells, Level* actualLevel);
 void FloodFill(Cell* cells, Cell cell);
 int CountAdjacentFlagged(Cell* cells, Cell cell);
+void PopulateCellsArray();
 
 
 // Functions implementations
@@ -102,6 +121,7 @@ void DistributeMines(Cell* cells, Level* level)
 
     int minesIndexes[level->minesAmount];
     int newIndex = 0;
+    int forbiddenIndex = GetClickedCellIndex(actualLevel);
     bool duplicate = false;
 
     for (int count = 0; count < level->minesAmount;)
@@ -115,6 +135,8 @@ void DistributeMines(Cell* cells, Level* level)
                 break;
             }
         }
+
+        if (newIndex == forbiddenIndex) duplicate = true;
 
         if (!duplicate) minesIndexes[count++] = newIndex;
         duplicate = false;
@@ -216,38 +238,55 @@ void DrawGame(Cell* cells, Level* level)
 
 void HandleEvents(Cell** cellsPtr, Level *actualLevel)
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    if ((gameState == PLAYING) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && IsClickInsideGrid(*cellsPtr, actualLevel))
     {
         ToggleFlagged(*cellsPtr, actualLevel);
     }
-    else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsClickInsideGrid(*cellsPtr, actualLevel))
+    else if ((gameState != GAME_OVER) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsClickInsideGrid(*cellsPtr, actualLevel))
     {
+        if (gameState == FIRST_CLICK)
+        {
+            DistributeMines(cells, actualLevel);
+            SetAdjacentCellsIndexes(cells, actualLevel);
+            SetAdjacentMinesAmount(cells, actualLevel);
+            gameState = PLAYING;
+        }
+
         int cellIndex = GetClickedCellIndex(actualLevel);
         Cell* cell = &(*cellsPtr)[cellIndex];
 
         if (!cell->revealed && !cell->mine && !cell->adjacentMinesAmount) FloodFill(*cellsPtr, *cell);
         if (!cell->revealed) cell->revealed = true;
         else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
+
+        if (cell->mine)
+        {
+            gameState = GAME_OVER;
+        }
     }
 
     if (IsKeyPressed(KEY_R))
     {
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_ONE) && strcmp(actualLevel->name, LEVEL_BEGINNER.name))
     {
         *actualLevel = LEVEL_BEGINNER;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_TWO) && strcmp(actualLevel->name, LEVEL_INTERMEDIATE.name))
     {
         *actualLevel = LEVEL_INTERMEDIATE;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
     else if (IsKeyPressed(KEY_THREE) && strcmp(actualLevel->name, LEVEL_ADVANCED.name))
     {
         *actualLevel = LEVEL_ADVANCED;
-        GenerateGameGrid(cellsPtr, actualLevel);
+        gameState = FIRST_CLICK;
+        PopulateCellsArray();
     }
 }
 
@@ -265,11 +304,10 @@ int GetClickedCellIndex(Level* actualLevel)
     Vector2 mousePos = GetMousePosition();
     float levelWidth = actualLevel->columns*actualLevel->cellSize;
     float levelHeight = actualLevel->rows*actualLevel->cellSize;
-    float relX = mousePos.x - ((GetScreenWidth() - levelWidth)/2.0f);
-    float relY = mousePos.y - ((GetScreenHeight() - levelHeight)/2.0f);
 
-    int x = relX/actualLevel->cellSize;
-    int y = relY/actualLevel->cellSize;
+    int x = Remap(mousePos.x, cells[0].boundaries.x, cells[0].boundaries.x + levelWidth, 0.0f, levelWidth)/actualLevel->cellSize;
+    int y = Remap(mousePos.y, cells[0].boundaries.y, cells[0].boundaries.y + levelHeight, 0.0f, levelHeight)/actualLevel->cellSize;
+
     return (y*actualLevel->columns) + x;
 }
 
@@ -285,6 +323,11 @@ void ToggleFlagged(Cell* cells, Level* actualLevel)
 void FloodFill(Cell* cells, Cell cell)
 {
     cell.revealed = true;
+
+    if (cell.mine)
+    {
+        gameState = GAME_OVER;
+    }
 
     int neighborIndex = -1;
     Cell* neighbor = NULL;
@@ -321,29 +364,53 @@ int CountAdjacentFlagged(Cell* cells, Cell cell)
     return adjacentFlagged;
 }
 
+void PopulateCellsArray()
+{
+    float xOffset = gridCenter->x - (actualLevel->columns*actualLevel->cellSize/2.0f);
+    float yOffset = gridCenter->y - (actualLevel->rows*actualLevel->cellSize/2.0f);
+    float xPos = 0, yPos = 0;
+    int x = 0, y = 0;
+
+    *cellsPtr = (Cell*)realloc((*cellsPtr), actualLevel->cellsAmount*sizeof(Cell));
+    if (*cellsPtr == NULL) exit(1);
+
+    for (int i = 0; i < actualLevel->cellsAmount; i++)
+    {
+        xPos = xOffset + (x*actualLevel->cellSize);
+        yPos = yOffset + (y*actualLevel->cellSize);
+        cells[i] = (Cell)
+        {
+            .boundaries=(Rectangle){xPos, yPos, actualLevel->cellSize, actualLevel->cellSize},
+            .revealed=false,
+            .flagged=false,
+            .mine=false,
+            .index=i,
+            .adjacentMinesAmount=0,
+            .adjacentCellsIndexes = {-1, -1, -1, -1, -1, -1, -1, -1},
+        };
+
+        if (++x >= actualLevel->columns)
+        {
+            x = 0;
+            ++y;
+        }
+    }
+}
+
 int main() 
 {
     SetTraceLogLevel(LOG_NONE);
 
-    static int fps = 30;
-    int screenWidth = 500;
-    int screenHeight = 276;
-
     InitWindow(screenWidth, screenHeight, GAME_NAME);
     SetTargetFPS(fps);
 
-    Level* actualLevel = &LEVEL_INTERMEDIATE;
-    Cell* cells = NULL;
-    Cell** cellsPtr = &cells;
-    GenerateGameGrid(cellsPtr, actualLevel);
+    PopulateCellsArray();
 
     while (!WindowShouldClose())
     {
         HandleEvents(cellsPtr, actualLevel);
         DrawGame(cells, actualLevel);
     }
-
-    MemFree(cells);
 
     CloseWindow();
 
