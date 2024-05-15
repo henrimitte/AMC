@@ -33,6 +33,16 @@ Currently, the game does not check for a **Win** condition, but is does check fo
 - Use the `RIGHT MOUSE BUTTON` to **Flag/Unflag** cells
 - Use the `LEFT MOUSE BUTTON` to **Reveal** cells
 
+## Possible additions/improvements
+
+- [ ] Time counter
+- [ ] Flags/Mines counter
+- [ ] Game Over screen (reveal all mines and display infos)
+- [ ] Win condition check (all cells with no mine are opened)
+- [ ] Win screen (display time and infos)
+- [ ] Create a spritesheet for the game
+- [ ] Use the spritesheet
+
 ---
 # Building from source
 
