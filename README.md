@@ -8,16 +8,17 @@ If you are looking for binaries, they may be available at the [Github Releases](
 
 *AMC stands for AMC Minesweeper Clone!*
 
-## Features (v0.2.1)
+## Features (latest release)
 
-- 3 Levels available:
-    1. **Beginner**, with a **9x9** grid and **10 mines**
-    2. **Intermediate**, with a **16x16** grid and **40 mines**
-    3. **Advanced**, with a **30x16** grid and **99 mines**
+- 3 **Levels** available:
+    1. **Beginner** [**9x9** grid, **10 mines**]
+    2. **Intermediate** [**16x16** grid, **40 mines**]
+    3. **Advanced** [**30x16** grid, **99 mines**]
 - **Flag/Unflag** cells you think have a mine
-- **Automatically Reveal** adjacent cells
-- The first cell opened is **never** a mine
-- A **Game Over** state when a mine is opened
+- **Automatically Reveal** adjacent cells (**chording**)
+- First cell opened is **never** a mine
+- **Reveal All Mines** in a Game Over
+- **Don't open** flagged cells (prevent misclicks)
 
 ## Gameplay
 Currently, the game does not check for a **Win** condition, but is does check for a **Lose** condition. If a mine is opened, then the mouse clicks will not have effect anymore until a new game is started. Still, it's up to the player to start a new game when opening a mine or winning a game. 
@@ -39,7 +40,7 @@ Currently, the game does not check for a **Win** condition, but is does check fo
 - [ ] Time display
 - [ ] Flags/Mines counter
 - [ ] Flags/Mines display
-- [ ] Game Over screen (reveal all mines)
+- [x] Game Over screen (reveal all mines)
 - [ ] Win condition check (all cells with no mine are opened)
 - [ ] Win screen (display time)
 - [ ] Create spritesheet
