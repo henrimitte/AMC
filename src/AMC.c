@@ -343,7 +343,7 @@ void GameOver()
 {
     for (int i = 0; i < actualLevel->cellsAmount; i++)
     {
-        if (cells[i].mine) cells[i].revealed = true;
+        if (cells[i].mine && !cells[i].flagged) cells[i].revealed = true;
     }
     gameState = GAME_OVER;
 }

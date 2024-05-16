@@ -8,8 +8,8 @@
 
 #define AMC_VERSION_MAJOR 0
 #define AMC_VERSION_MINOR 3
-#define AMC_VERSION_PATCH 0
-#define AMC_VERSION "0.3.0"
+#define AMC_VERSION_PATCH 1
+#define AMC_VERSION "0.3.1"
 
 
 Cell* GetCellsArray(Level* level);
