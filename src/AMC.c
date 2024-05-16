@@ -209,7 +209,7 @@ void HandleEvents(Cell** cellsPtr, Level *actualLevel)
         if (!cell->revealed && !cell->flagged) cell->revealed = true;
         else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
 
-        if (cell->mine) GameOver();
+        if (cell->mine && !cell->flagged) GameOver();
     }
 
     if (IsKeyPressed(KEY_R))
