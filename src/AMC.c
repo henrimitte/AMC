@@ -8,6 +8,7 @@
 #include <raymath.h>
 
 #include "cell.h"
+#include "level.h"
 
 
 // Defines
@@ -17,21 +18,6 @@
 #define AMC_VERSION_MINOR 2
 #define AMC_VERSION_PATCH 1
 #define AMC_VERSION "0.2.1"
-
-#define LEVEL_BEGINNER (Level){9, 9, 9*9, 10, 16, "Beginner"}
-#define LEVEL_INTERMEDIATE (Level){16, 16, 16*16, 40, 16, "Intermediate"}
-#define LEVEL_ADVANCED (Level){30, 16, 30*16, 99, 16, "Advanced"}
-
-
-typedef struct Level {
-    unsigned int columns;
-    unsigned int rows;
-    unsigned int cellsAmount;
-    unsigned int minesAmount;
-    unsigned int cellSize;
-    char name[25];
-} Level;
-
 
 enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
 
