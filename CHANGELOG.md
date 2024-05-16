@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Nothing yet!
+
+## [0.3.0] - 2024-05-16
+
 ###  Added
 
 - All mines are revealed when a Game Over state happens.
@@ -42,7 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Chording**, which automatically reveal adjacent cells.
 - README with instructions for playing the game and building it from source.
 
-[Unreleased]: https://github.com/henrimitte/AMC/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/henrimitte/AMC/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/henrimitte/AMC/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/henrimitte/AMC/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/henrimitte/AMC/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/henrimitte/AMC/releases/tag/v0.1.0
