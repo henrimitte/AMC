@@ -206,7 +206,7 @@ void HandleEvents(Cell** cellsPtr, Level *actualLevel)
         Cell* cell = &(*cellsPtr)[cellIndex];
 
         if (!cell->revealed && !cell->mine && !cell->adjacentMinesAmount) FloodFill(*cellsPtr, *cell);
-        if (!cell->revealed) cell->revealed = true;
+        if (!cell->revealed && !cell->flagged) cell->revealed = true;
         else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
 
         if (cell->mine)
