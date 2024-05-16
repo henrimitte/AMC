@@ -36,11 +36,13 @@ Currently, the game does not check for a **Win** condition, but is does check fo
 ## Possible additions/improvements
 
 - [ ] Time counter
+- [ ] Time display
 - [ ] Flags/Mines counter
-- [ ] Game Over screen (reveal all mines and display infos)
+- [ ] Flags/Mines display
+- [ ] Game Over screen (reveal all mines)
 - [ ] Win condition check (all cells with no mine are opened)
-- [ ] Win screen (display time and infos)
-- [ ] Create a spritesheet for the game
+- [ ] Win screen (display time)
+- [ ] Create spritesheet
 - [ ] Use the spritesheet
 
 ---
