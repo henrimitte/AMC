@@ -25,6 +25,7 @@ void ToggleFlagged(Cell* cells, Level* actualLevel);
 void FloodFill(Cell* cells, Cell cell);
 int CountAdjacentFlagged(Cell* cells, Cell cell);
 void PopulateCellsArray();
+void GameOver();
 
 
 #endif  // AMC_H

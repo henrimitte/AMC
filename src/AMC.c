@@ -209,10 +209,7 @@ void HandleEvents(Cell** cellsPtr, Level *actualLevel)
         if (!cell->revealed && !cell->flagged) cell->revealed = true;
         else if (cell->revealed && (CountAdjacentFlagged(*cellsPtr, *cell) == cell->adjacentMinesAmount)) FloodFill(*cellsPtr, *cell);
 
-        if (cell->mine)
-        {
-            gameState = GAME_OVER;
-        }
+        if (cell->mine) GameOver();
     }
 
     if (IsKeyPressed(KEY_R))
@@ -288,7 +285,7 @@ void FloodFill(Cell* cells, Cell cell)
             if (!neighbor->revealed && !neighbor->flagged)
             {
                 neighbor->revealed = true;
-                if (neighbor->mine) gameState = GAME_OVER;
+                if (neighbor->mine) GameOver();
                 if (neighbor->adjacentMinesAmount == 0) FloodFill(cells, *neighbor);
             }
         }
@@ -340,6 +337,15 @@ void PopulateCellsArray()
             ++y;
         }
     }
+}
+
+void GameOver()
+{
+    for (int i = 0; i < actualLevel->cellsAmount; i++)
+    {
+        if (cells[i].mine) cells[i].revealed = true;
+    }
+    gameState = GAME_OVER;
 }
 
 int main() 
