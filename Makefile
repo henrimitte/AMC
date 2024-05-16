@@ -7,8 +7,8 @@ AMC_VERSION_PATCH = 1
 AMC_VERSION = "$(AMC_VERSION_MAJOR).$(AMC_VERSION_MINOR).$(AMC_VERSION_PATCH)"
 
 # Default paths
-SOURCE_DIR = src
-BUILD_DIR = build
+SOURCE_DIR = ./src
+BUILD_DIR = ./build
 INSTALLATION_DIR = /usr/local/bin
 
 # The default C Compiler
@@ -23,7 +23,7 @@ USER = $(shell whoami)
 
 all: AMC
 
-AMC: $(SOURCE_DIR)/AMC.c
+AMC: $(SOURCE_DIR)/AMC.c ${SOURCE_DIR}/AMC.h ${SOURCE_DIR}/cell.h ${SOURCE_DIR}/game_state.h ${SOURCE_DIR}/level.h
 	@echo "# Making sure $(BUILD_DIR) directory exists..."
 	mkdir --parents --verbose $(BUILD_DIR)
 
