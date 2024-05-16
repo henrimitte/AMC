@@ -20,8 +20,6 @@
 #define AMC_VERSION_PATCH 1
 #define AMC_VERSION "0.2.1"
 
-enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
-
 
 // Global variables declarations
 static const int fps = 30;
