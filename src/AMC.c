@@ -1,5 +1,3 @@
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -7,21 +5,14 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include "AMC.h"
 #include "cell.h"
 #include "game_state.h"
 #include "level.h"
 
 
-// Defines
 #define GAME_NAME "AMC Minesweeper Clone"
 
-#define AMC_VERSION_MAJOR 0
-#define AMC_VERSION_MINOR 2
-#define AMC_VERSION_PATCH 1
-#define AMC_VERSION "0.2.1"
-
-
-// Global variables declarations
 static const int fps = 30;
 static const int screenWidth = 500;
 static const int screenHeight = 276;
@@ -35,23 +26,6 @@ static Cell** cellsPtr = &cells;
 static enum GameState gameState = FIRST_CLICK;
 
 
-// Functions declarations
-Cell* GetCellsArray(Level* level);
-void DistributeMines(Cell* cells, Level* level);
-void SetAdjacentCellsIndexes(Cell* cells, Level* level);
-void SetAdjacentMinesAmount(Cell* cells, Level* level);
-void GenerateGameGrid(Cell** cellsPtr, Level* level);
-void DrawGame(Cell* cells, Level* level);
-void HandleEvents(Cell** cellsPtr, Level* actualLevel);
-bool IsClickInsideGrid(Cell* cells, Level* actualLevel);
-int GetClickedCellIndex(Level* actualLevel);
-void ToggleFlagged(Cell* cells, Level* actualLevel);
-void FloodFill(Cell* cells, Cell cell);
-int CountAdjacentFlagged(Cell* cells, Cell cell);
-void PopulateCellsArray();
-
-
-// Functions implementations
 Cell* GetCellsArray(Level* level)
 {
     float halfScreenWidth = GetScreenWidth()/2.0f;
