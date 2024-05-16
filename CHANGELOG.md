@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Nothing yet!
+###  Added
+
+- All mines are revealed when a Game Over state happens.
+
+###  Fixed
+
+- If a cell is flagged, it will not open when clicked.
 
 ## [0.2.1] - 2024-05-09
 
-## Fixed
+###  Fixed
 
-- When chording, if a mine was revealed, the game would not stop. Now it correctly set the state to GAME OVER in those cases.
+- When chording, if a mine was revealed, the game would not stop. Now it correctly set the state to Game Over in those cases.
 
 ## [0.2.0] - 2024-05-09
 
@@ -36,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Chording**, which automatically reveal adjacent cells.
 - README with instructions for playing the game and building it from source.
 
-[Unreleased]: https://github.com/henrimitte/AMC/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/henrimitte/AMC/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/henrimitte/AMC/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/henrimitte/AMC/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/henrimitte/AMC/releases/tag/v0.1.0
