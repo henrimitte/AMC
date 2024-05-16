@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include "cell.h"
+
 
 // Defines
 #define GAME_NAME "AMC Minesweeper Clone"
@@ -29,17 +31,6 @@ typedef struct Level {
     unsigned int cellSize;
     char name[25];
 } Level;
-
-
-typedef struct Cell {
-    Rectangle boundaries;
-    bool revealed;
-    bool flagged;
-    bool mine;
-    int index;
-    int adjacentMinesAmount;
-    int adjacentCellsIndexes[8];
-} Cell;
 
 
 enum GameState {FIRST_CLICK, PLAYING, GAME_OVER};
