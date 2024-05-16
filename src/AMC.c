@@ -8,6 +8,7 @@
 #include <raymath.h>
 
 #include "cell.h"
+#include "game_state.h"
 #include "level.h"
 
 
