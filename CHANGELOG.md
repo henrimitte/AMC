@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Nothing yet!
+### Added
+
+- Sprites, giving a visual improvement to the game!
 
 ## [0.3.1] - 2024-05-16
 
-###  Fixed
+### Fixed
 
 - Flagged mines are not revealed anymore on a Game Over.
 
@@ -21,13 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - All mines are revealed when a Game Over state happens.
 
-###  Fixed
+### Fixed
 
 - If a cell is flagged, it will not open when clicked.
 
 ## [0.2.1] - 2024-05-09
 
-###  Fixed
+### Fixed
 
 - When chording, if a mine was revealed, the game would not stop. Now it correctly set the state to Game Over in those cases.
 

@@ -43,8 +43,8 @@ Currently, the game does not check for a **Win** condition, but is does check fo
 - [x] Game Over screen (reveal all mines)
 - [ ] Win condition check (all cells with no mine are opened)
 - [ ] Win screen (display time)
-- [ ] Create spritesheet
-- [ ] Use the spritesheet
+- [x] Create spritesheet
+- [x] Use the spritesheet
 
 ---
 # Building from source

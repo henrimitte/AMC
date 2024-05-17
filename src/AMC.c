@@ -25,6 +25,26 @@ static Cell** cellsPtr = &cells;
 
 static enum GameState gameState = FIRST_CLICK;
 
+static char spritesheetPath[] = "assets/minesweeper16.png";
+static Texture2D spritesheet = { 0 };
+
+static Rectangle spriteSources[] = {
+    (Rectangle){0.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){16.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){32.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){48.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){64.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){80.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){96.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){112.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){128.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){144.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){160.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){176.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){192.0f, 0.0f, 16.0f, 16.0f},
+    (Rectangle){208.0f, 0.0f, 16.0f, 16.0f},
+};
+
 
 Cell* GetCellsArray(Level* level)
 {
@@ -151,38 +171,40 @@ void GenerateGameGrid(Cell** cells, Level* level)
 
 void DrawGame(Cell* cells, Level* level)
 {
+    static Vector2 pos = { 0.0f, 0.0f };
+
     BeginDrawing();
         ClearBackground(LIGHTGRAY);
 
         for (int i = 0; i < level->cellsAmount; i++)
         {
-            DrawRectangleRec(cells[i].boundaries, cells[i].revealed ? LIGHTGRAY : GRAY);
+            pos = (Vector2){cells[i].boundaries.x, cells[i].boundaries.y};
 
             if (cells[i].revealed && cells[i].mine)
             {
-                DrawCircle(cells[i].boundaries.x + cells[i].boundaries.width/2.0f, cells[i].boundaries.y + cells[i].boundaries.height/2.0f, cells[i].boundaries.width*0.3f, RED);
+                DrawTextureRec(spritesheet, spriteSources[12], pos, WHITE);
             }
 
             else if (!cells[i].revealed && cells[i].flagged)
             {
-                Vector2 v1 = {cells[i].boundaries.x + cells[i].boundaries.width*0.1f, cells[i].boundaries.y + cells[i].boundaries.height*0.1f};
-                Vector2 v2 = {cells[i].boundaries.x + cells[i].boundaries.width*0.1f, cells[i].boundaries.y + cells[i].boundaries.width/2.0f};
-                Vector2 v3 = {cells[i].boundaries.x + cells[i].boundaries.width*0.9f, cells[i].boundaries.y + cells[i].boundaries.width/2.0f};
-                DrawTriangle(v1, v2, v3, MAROON);
-                DrawRectangleV(v2, (Vector2){cells[i].boundaries.width*0.15f, cells[i].boundaries.height*0.8f/2.0f}, DARKGRAY);
+                DrawTextureRec(spritesheet, spriteSources[10], pos, WHITE);
             }
 
-            else if (cells[i].revealed && cells[i].adjacentMinesAmount > 0)
+            else if (cells[i].revealed && cells[i].adjacentMinesAmount >= 0)
             {
-                Vector2 textSize = MeasureTextEx(GetFontDefault(), TextFormat("%d", cells[i].adjacentMinesAmount), 12, 0);
-                float textXPos = cells[i].boundaries.x + (cells[i].boundaries.width - textSize.x)/2.0f;
-                float textYPos = cells[i].boundaries.y + (cells[i].boundaries.height - textSize.y)/2.0f;
-                DrawText(TextFormat("%d", cells[i].adjacentMinesAmount), textXPos, textYPos, 12, DARKGRAY);
+                DrawTextureRec(
+                    spritesheet,
+                    spriteSources[cells[i].adjacentMinesAmount],
+                    (Vector2){cells[i].boundaries.x, cells[i].boundaries.y},
+                    WHITE
+                );  
             }
 
-            DrawRectangleLinesEx(cells[i].boundaries, 1.0f, DARKGRAY);
+            else
+            {
+                DrawTextureRec(spritesheet, spriteSources[9], pos, WHITE);
+            }
         }
-
     EndDrawing();
 }
 
@@ -355,6 +377,7 @@ int main()
     InitWindow(screenWidth, screenHeight, GAME_NAME);
     SetTargetFPS(fps);
 
+    spritesheet = LoadTexture(spritesheetPath);
     PopulateCellsArray();
 
     while (!WindowShouldClose())
