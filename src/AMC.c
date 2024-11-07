@@ -265,23 +265,17 @@ HandleEvents (Cell **cellsPtr, Level *actualLevel)
   else if (IsKeyPressed (KEY_ONE)
            && strcmp (actualLevel->name, LEVEL_BEGINNER.name))
     {
-      *actualLevel = LEVEL_BEGINNER;
-      gameState = FIRST_CLICK;
-      PopulateCellsArray ();
+      ResetGame (&LEVEL_BEGINNER);
     }
   else if (IsKeyPressed (KEY_TWO)
            && strcmp (actualLevel->name, LEVEL_INTERMEDIATE.name))
     {
-      *actualLevel = LEVEL_INTERMEDIATE;
-      gameState = FIRST_CLICK;
-      PopulateCellsArray ();
+      ResetGame (&LEVEL_INTERMEDIATE);
     }
   else if (IsKeyPressed (KEY_THREE)
            && strcmp (actualLevel->name, LEVEL_ADVANCED.name))
     {
-      *actualLevel = LEVEL_ADVANCED;
-      gameState = FIRST_CLICK;
-      PopulateCellsArray ();
+      ResetGame (&LEVEL_ADVANCED);
     }
 }
 
@@ -414,6 +408,14 @@ GameOver ()
         cells[i].revealed = true;
     }
   gameState = GAME_OVER;
+}
+
+void
+ResetGame (Level *level)
+{
+  *actualLevel = *level;
+  gameState = FIRST_CLICK;
+  PopulateCellsArray ();
 }
 
 int

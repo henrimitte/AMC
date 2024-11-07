@@ -23,5 +23,6 @@ void FloodFill (Cell *cells, Cell cell);
 int CountAdjacentFlagged (Cell *cells, Cell cell);
 void PopulateCellsArray ();
 void GameOver ();
+void ResetGame (Level *level);
 
 #endif // AMC_H
