@@ -1,4 +1,4 @@
-.PHONY: all clean install uninstall
+.PHONY: all clean install run uninstall
 
 # AMC Version
 AMC_VERSION_MAJOR = 0
@@ -23,12 +23,15 @@ USER = $(shell whoami)
 
 all: AMC
 
-AMC: $(SOURCE_DIR)/AMC.c ${SOURCE_DIR}/AMC.h ${SOURCE_DIR}/cell.h ${SOURCE_DIR}/game_state.h ${SOURCE_DIR}/level.h
+AMC: $(BUILD_DIR)/AMC.o
+	mv --verbose $(BUILD_DIR)/AMC.o $(BUILD_DIR)/AMC
+
+$(BUILD_DIR)/AMC.o: $(SOURCE_DIR)/AMC.c ${SOURCE_DIR}/AMC.h ${SOURCE_DIR}/cell.h ${SOURCE_DIR}/game_state.h ${SOURCE_DIR}/level.h
 	@echo "# Making sure $(BUILD_DIR) directory exists..."
 	mkdir --parents --verbose $(BUILD_DIR)
 
 	@echo "# Building the game: AMC (v$(AMC_VERSION))..."
-	$(CC) $(CFLAGS) $(SOURCE_DIR)/AMC.c -o $(BUILD_DIR)/AMC
+	$(CC) $(SOURCE_DIR)/AMC.c -o $(BUILD_DIR)/AMC.o $(CFLAGS) 
 
 install: AMC
 ifeq ($(USER),root)
@@ -54,3 +57,6 @@ endif
 clean:
 	@echo "# Removing the build directory..."
 	rm --recursive --force --verbose $(BUILD_DIR)
+
+run:
+	$(BUILD_DIR)/AMC
