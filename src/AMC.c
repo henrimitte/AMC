@@ -25,7 +25,28 @@ static Cell **cellsPtr = &cells;
 
 static enum GameState gameState = FIRST_CLICK;
 
-static char spritesheetPath[] = "assets/minesweeper16.png";
+static const unsigned char sprites16[]
+    = "iVBORw0KGgoAAAANSUhEUgAAAOAAAAAQCAYAAAAPv3P4AAAC7UlEQVR4XmMsLS39zzAKRkO"
+      "AzBBobW0lO+yqq6sZBlr/QEc8C8gBLi4uZLljz549DKP6GRhGeviRk3hAmY+SxE9N/"
+      "ZTGX+GWQ2R5pd/HjoGFViWAu7sbitE7d+4iyir3k+541e0034lX3s0dv/5dO/Hrd3c/DTZ/"
+      "505TFHtwiaM75jQB+00J2X/yNAH/m+KVP+2OX7/pTvz6YYUqLktwJdb9+/"
+      "dTlJRY2dgYCMUNPgvYgPp3EghbmH53YBwBW35o8evOQIx+"
+      "kF5s6qSun2R4pmlOMAzQ1dEsAzKMgtEQIDEEYIUnORkR1I9iBGYsEI1PPywDoRc0oEwFk3P"
+      "HU4jiyqSgzAfLXCAal9fRMynNMiCsxkOvCQnFCa4ajlDNCDMXV+"
+      "ATqhmpnVtMiSyNcdm709yULCfhquEI1YzolqHXdIRqRmqGH7kZEZwJgQ75D81A6GkBV+"
+      "0FczssE5LrF1gmJEU/E8MoGA2BQRoCoIxIasEJy4QgLyHrJ5T5QOphNd/"
+      "Xr18ZQBhbsOCrHWE1Hz796LXjaAYczX6DPgRIzYjImRCWsQbrUP+"
+      "g6wMS29QklGoobXK6ExjMIGQ/"
+      "rsEYYpum7jgGY8htmpKay+jZ5CTWbaQ0TZEzISzzEaufm5ubokKJFP2DdhCG0GgnoRBCb/"
+      "8TmyF34hglJDZD4spghEZH0f2DntHcCYyOUrsao3cfkBHqgZ1k9p2x6sfRFxxMVf5oE5RhF"
+      "AzHEID1+SgdWKF12IxmwNH8N+"
+      "xCAH3AZTBnwkHbBMXVF6R0Ip7WqY3UpiYu99C7yYnujsHYByQm7nCNdiLP81GSBnZSOL2EP"
+      "g84WgOO1oDDKgTwZRB8NSFykxVXgODTD5uEx7caBts8Ic1rQGKXoME8Te3BF2qlrp07iZsY"
+      "H6gJeEL+NCXS/"
+      "eSuixwquRiWidCXoiFnXEKZGJtfkTMeoUyIrH90KdpoDUhxCFBjYTQsQ5DT9AXZT4p+"
+      "9Mw3kElgdDvSaAYcDYEBDAEAzPpHmCMn+7kAAAAASUVORK5CYII=";
+
+static int size_sprites16 = sizeof (sprites16);
 static Texture2D spritesheet = { 0 };
 
 static Rectangle spriteSources[] = {
@@ -426,7 +447,10 @@ main ()
   InitWindow (screenWidth, screenHeight, GAME_NAME);
   SetTargetFPS (fps);
 
-  spritesheet = LoadTexture (spritesheetPath);
+  Image img = LoadImageFromMemory (
+      ".png", DecodeDataBase64 (sprites16, &size_sprites16), size_sprites16);
+  spritesheet = LoadTextureFromImage (img);
+  UnloadImage (img);
   PopulateCellsArray ();
 
   while (!WindowShouldClose ())
