@@ -270,8 +270,7 @@ HandleEvents (Cell **cellsPtr, Level *actualLevel)
 
   if (IsKeyPressed (KEY_R))
     {
-      gameState = FIRST_CLICK;
-      PopulateCellsArray ();
+      ResetGame (NULL);
     }
   else if (IsKeyPressed (KEY_ONE)
            && strcmp (actualLevel->name, LEVEL_BEGINNER.name))
@@ -424,7 +423,8 @@ GameOver ()
 void
 ResetGame (Level *level)
 {
-  *actualLevel = *level;
+  if (level != NULL)
+    *actualLevel = *level;
   gameState = FIRST_CLICK;
   PopulateCellsArray ();
 }
