@@ -1,7 +1,15 @@
 #ifndef AMC_H
 #define AMC_H
 
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include <raylib.h>
+#include <raymath.h>
+
 #include "cell.h"
+#include "game_state.h"
 #include "level.h"
 
 #define AMC_VERSION_MAJOR 0

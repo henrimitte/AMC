@@ -1,14 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include <raylib.h>
-#include <raymath.h>
-
 #include "AMC.h"
-#include "cell.h"
-#include "game_state.h"
-#include "level.h"
 
 #define GAME_NAME "AMC Minesweeper Clone"
 
